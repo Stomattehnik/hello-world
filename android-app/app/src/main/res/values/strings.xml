@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Tennis Predictor</string>
+    <string name="player_one">Player One</string>
+    <string name="player_two">Player Two</string>
+    <string name="calculate">Розрахувати</string>
+    <string name="probability_result">Ймовірність: %1$.1f%%</string>
+    <string name="quality_score">Якість: %1$.3f</string>
+    <string name="invalid_number">Некоректне число</string>
+    <string name="value_range_error">Значення має бути в межах 0–1</string>
+    <string name="name_required">Ім’я не може бути порожнім</string>
+    <string name="ranking_positive_error">Рейтинг має бути додатним числом</string>
+    <string name="ranking_hint">Рейтинг (1 = найкраще)</string>
+    <string name="serve_hint">Подача, 0–1</string>
+    <string name="return_hint">Прийом, 0–1</string>
+    <string name="surface_hint">Покриття, 0–1</string>
+    <string name="form_hint">Форма, 0–1</string>
+</resources>
