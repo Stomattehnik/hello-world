@@ -38,6 +38,56 @@ python tennis_prediction.py --matches-file matches.csv --output predictions.csv
 Скрипт виведе результати у консоль і, за потреби, збереже їх у файл
 `predictions.csv`.
 
+## Гібридна модель (Gradient Boosting + Neural Network)
+
+Файл `hybrid_pipeline.py` містить приклад офлайн-пайплайну для побудови гібридної
+моделі, яка поєднує градієнтний бустинг та багатошаровий перцептрон у режимі
+stacking. Пайплайн охоплює:
+
+* попередню обробку числових та категоріальних фіч;
+* отримання out-of-fold прогнозів бустингу для тренування нейромережі;
+* оцінювання моделі за метриками ROC AUC, LogLoss, Brier Score та Accuracy;
+* серіалізацію артефактів для подальшого експорту в ONNX/Core ML.
+
+### Приклад використання в Python
+
+```python
+from hybrid_pipeline import HybridPipelineConfig, HybridWinProbabilityPipeline
+
+matches = [
+    {
+        "p1_rank": 0.2,
+        "p2_rank": 0.6,
+        "p1_form": 0.8,
+        "p2_form": 0.5,
+        "surface_index": 0.7,
+        "winner": 1.0,
+    },
+    # ... додаткові матчі
+]
+
+config = HybridPipelineConfig(
+    target_column="winner",
+    numeric_features=["p1_rank", "p2_rank", "p1_form", "p2_form", "surface_index"],
+    n_splits=4,
+    boosting_estimators=80,
+    boosting_learning_rate=0.1,
+    hidden_size=32,
+    nn_learning_rate=0.03,
+    nn_epochs=150,
+)
+
+pipeline = HybridWinProbabilityPipeline(config)
+pipeline.fit(matches)
+
+print(pipeline.evaluate(matches))
+pipeline.save("hybrid_model.json")
+```
+
+Отриманий JSON-артефакт містить повний пайплайн (препроцесинг + моделі) і може бути
+конвертований у формат Core ML за допомогою `coremltools`, щоб виконувати
+інференс на iOS-пристрої.
+
 ### Тестування
 
 Для перевірки логіки можна запустити автоматичні тести:
