@@ -64,6 +64,19 @@ Player A,8,0.63,0.41,0.70,0.82,Player B,14,0.59,0.38,0.68,0.74
     assert 0 <= prediction.probability_one <= 1
 
 
+def test_predict_from_csv_missing_name(tmp_path: Path) -> None:
+    csv_path = tmp_path / "matches.csv"
+    csv_path.write_text(
+        """player_one_ranking,player_one_serve,player_one_return,player_one_surface,player_one_form,player_two_name,player_two_ranking,player_two_serve,player_two_return,player_two_surface,player_two_form
+8,0.63,0.41,0.70,0.82,Player B,14,0.59,0.38,0.68,0.74
+""",
+        encoding="utf8",
+    )
+
+    with pytest.raises(ValueError, match="missing 'player_one_name' column in CSV"):
+        tp.predict_from_csv(csv_path)
+
+
 def test_manual_mode_validation() -> None:
     parser = tp.build_parser()
     namespace = parser.parse_args(
