@@ -120,6 +120,7 @@ def _build_player(namespace: argparse.Namespace, prefix: str) -> PlayerStats:
 
 def _parse_player_from_row(row: dict[str, str], prefix: str) -> PlayerStats:
     try:
+        name = row[f"{prefix}_name"]
         ranking = int(row[f"{prefix}_ranking"])
         serve = float(row[f"{prefix}_serve"])
         ret = float(row[f"{prefix}_return"])
@@ -141,7 +142,7 @@ def _parse_player_from_row(row: dict[str, str], prefix: str) -> PlayerStats:
             raise ValueError(f"{prefix}_{stat_name} must be between 0 and 1")
 
     return PlayerStats(
-        name=row[f"{prefix}_name"],
+        name=name,
         ranking=ranking,
         serve_points_won=serve,
         return_points_won=ret,
