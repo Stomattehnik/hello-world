@@ -149,7 +149,7 @@ When making changes, ignore the following:
 * **README**: Keep README.md up to date with examples and usage instructions
 * **Code Comments**: Add comments for complex logic or non-obvious decisions
 * **Docstrings**: Document all public functions, classes, and modules
-* **Language**: Documentation is in Ukrainian (українська мова)
+* **Language**: User-facing documentation (README.md) is primarily in Ukrainian (українська мова). Technical documentation (like this file), code comments, and docstrings may be in English for broader accessibility.
 * **Examples**: Include practical examples in docstrings and README
 
 ## Specific Guidelines
