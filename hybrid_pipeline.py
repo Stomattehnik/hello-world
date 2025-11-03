@@ -368,11 +368,21 @@ def _roc_auc_score(targets: Sequence[int], probabilities: Sequence[float]) -> fl
     negatives = len(targets) - positives
     if positives == 0 or negatives == 0:
         return 0.5
+
     ranked = sorted(zip(probabilities, targets))
     rank_sum = 0.0
-    for rank, (_, label) in enumerate(ranked, start=1):
-        if label == 1:
-            rank_sum += rank
+    index = 0
+    while index < len(ranked):
+        tie_start = index
+        tie_value, _ = ranked[index]
+        while index < len(ranked) and ranked[index][0] == tie_value:
+            index += 1
+        tie_end = index  # exclusive
+        average_rank = (tie_start + 1 + tie_end) / 2.0
+        for tie_index in range(tie_start, tie_end):
+            if ranked[tie_index][1] == 1:
+                rank_sum += average_rank
+
     auc = (rank_sum - positives * (positives + 1) / 2.0) / (positives * negatives)
     return float(auc)
 
