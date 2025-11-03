@@ -87,3 +87,14 @@ def test_hybrid_pipeline_stack(tmp_path: Path) -> None:
     restored_probs = restored.predict_proba(sample)
     for original, recovered in zip(probabilities, restored_probs):
         assert math.isclose(original[1], recovered[1], rel_tol=1e-6)
+
+
+def test_roc_auc_tie_handling() -> None:
+    # Two identical probability scores should yield an AUC of 0.5 when
+    # the labels contain both classes. The previous implementation assigned
+    # different ranks to ties, inflating the metric.
+    from hybrid_pipeline import _roc_auc_score
+
+    probabilities = [0.5, 0.5]
+    targets = [0, 1]
+    assert math.isclose(_roc_auc_score(targets, probabilities), 0.5)
