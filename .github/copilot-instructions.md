@@ -185,7 +185,6 @@ When making changes, ignore the following:
 
 ## Additional Notes
 
-* This is a Ukrainian language project - documentation may be in Ukrainian
 * The project is designed for educational and demonstration purposes
 * Focus on transparency and explainability of predictions
 * Mobile deployment is a key consideration for model design
